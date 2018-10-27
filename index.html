@@ -7,15 +7,41 @@
     <title>Getting all the things</title>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script>
+        var url = "https://jsonplaceholder.typicode.com/todos";
+        function getTodo(){
+            var item = $("#item").val();
+            var todo = $("#todo");
+            var newUrl = url + '/' + item;
+            $.getJSON(newUrl, function( data ){
+                todo.html("");
+                todo.append('<h3>' + data.title + '</h3>')
+                todo.append('<h4>' + data.completed + '</h4>')
+                todo.append('<h5>User ID:' + data.userId + '</h5>')
+                console.log(data);
+            });
+        }
         $(function(){
-            alert("Holy Crap this actually worked");
+            var todoList = $("#todoList");
+            $.getJSON(url, function( data ){
+                for(var i=0; i<data.length;i++){
+                    todoList.append('<li id="todo' + data[i].id + '">' + data[i].title+'</li>');
+                    if(data[i].completed){
+                        $("#todo" + data[i].id).css("color","green");
+                    } else {
+                        $("#todo" + data[i].id).css("color","red");
+                    }
+                }
+            });
         });
     </script>
 </head>
 <body>
-    <ul id="todoList">
+    <input id = "item" type = "text" placeholder="Todo Number">
+    <input type = "button" value = "Pick" onclick = "getTodo()">
+    <div id = "todo"></div>
+    <ol id="todoList">
         
-    </ul>
+    </ol>
     
 </body>
 </html>
